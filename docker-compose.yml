@@ -1,24 +1,12 @@
 services:
-  mongo:
-    image: mongo:7
+  quivr:
+    build: .
     restart: unless-stopped
-    volumes:
-      - mongo-data:/data/db
-
-  server:
-    build: ./server
-    restart: unless-stopped
-    depends_on:
-      - mongo
-    environment:
-      DATABASE_URI: mongodb://mongo:27017/quivr
-      MASTER_KEY: ${MASTER_KEY:-}
-      PUBLIC_SERVER_URL: ${PUBLIC_SERVER_URL:-http://127.0.0.1:4040/parse}
-      LOG_LEVEL: ${LOG_LEVEL:-info}
     ports:
-      # Only reachable from this computer by default. Set BIND_ADDRESS=0.0.0.0 in .env
-      # to let other players connect.
-      - "${BIND_ADDRESS:-127.0.0.1}:${PORT:-4040}:1337"
+      # 127.0.0.1 = only this computer. Use "4040:4040" to let other players connect.
+      - "127.0.0.1:4040:4040"
+    volumes:
+      - quivr-data:/data
 
 volumes:
-  mongo-data:
+  quivr-data:

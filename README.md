@@ -1,109 +1,109 @@
-# quivr-server
+# QuiVr Revival
 
-A replacement backend for **[QuiVr](https://store.steampowered.com/app/489380/QuiVr/)**, the VR archery game by Alvios, Inc.
+Brings back saving in **[QuiVr](https://store.steampowered.com/app/489380/QuiVr/)**, the VR archery game by Alvios, Inc.
 
-QuiVr keeps every player's progress (relic fragments, items, outfit, titles) on an online server. That server is gone, so the game now shows
+QuiVr kept every player's items, relic fragments and leaderboard scores on an online server. That server is gone, so the game shows
 
 > Error Saving — User Data Corrupted, please restart
 
-whenever you earn something, and nothing is ever saved. Your local files are fine; there is just nobody to save to.
+and nothing you earn is kept. QuiVr Revival is a small replacement server plus a one-time change to the game so it uses it. You can run it on your own PC (it starts with the game) or share one with friends.
 
-This project brings that server back: a [Parse Server](https://parseplatform.org/) with the game's database layout, its four server-side functions and the original item catalog, plus a small patcher that points the game at it.
+> Not affiliated with Alvios, Inc. Accounts from the official server can't be recovered; everyone starts fresh.
 
-> Not affiliated with Alvios, Inc. Old accounts and items from the official server cannot be recovered — everyone starts fresh.
+## For players
 
-## What works
+### Windows
 
-- Login (automatic, via your Steam ID), saving relic fragments, items, outfit, titles, stats
-- Random item rewards after a run, with the original 41-item loot table
-- Reforging / disenchanting, Hallowed and Primordial rolls
-- In-game leaderboards (singleplayer, multiplayer, archery range, owl minigame) and the temporary leaderboard bows
-- Achievement bows (handled by the game itself)
-- Multiplayer (runs on Photon, which was never down)
+1. Download `QuiVrRevival-…-windows.zip` from [Releases](../../releases) and unzip it anywhere.
+2. Double-click **QuiVrRevival.exe**. If Windows says *"Windows protected your PC"*, click *More info* → *Run anyway* (the program isn't code-signed).
+3. Press **Enter** (option **1 – Play on this PC**).
+4. Start QuiVr from Steam as usual.
 
-Not included: the quivr.net website leaderboards and the PvP matchmaking queue.
+That's all. The server starts and stops together with the game, and your progress is stored in `%APPDATA%\QuiVrRevival`.
 
-## Quick start (play on your own PC)
+### Linux / Steam Deck (Proton)
 
-Requirements: [Docker](https://docs.docker.com/get-docker/) with Compose, and the [.NET 8 SDK](https://dotnet.microsoft.com/download) for the patcher.
+1. Download `QuiVrRevival-…-linux.zip`, unzip, run `./QuiVrRevival` in a terminal and choose **1**.
+   Keep `QuiVrRevival.exe` next to it — under Proton the game starts that one itself.
+2. Start QuiVr from Steam as usual.
+
+Progress is stored in the game's Proton prefix (`steamapps/compatdata/489380/pfx/drive_c/users/steamuser/AppData/Roaming/QuiVrRevival`), so it is deleted if you delete that prefix.
+
+### Playing together
+
+Players who want to share leaderboards (and see each other's scores) use one server:
+
+- **The host** runs QuiVrRevival and chooses **3 – Host a server for others**. The window lists the address to hand out; keep it open while people play. For players outside your home network, forward TCP port **4040** on your router. The host can play too: choose **1** once, and the game uses the running server.
+- **Everyone else** chooses **2 – Play on someone's server** and enters that address.
+
+Multiplayer matches themselves never needed this server and work either way.
+
+### Undo / after game updates
+
+Choose **4 – Uninstall**, or use Steam's *Verify integrity of game files*. Your progress is kept. If Steam ever restores the game files, run QuiVrRevival again and choose 1 (or 2).
+
+### What works
+
+- Items, relic fragments, outfit, titles, stats — saved and loaded
+- Random item rewards (the original 41-item loot table), reforging, Hallowed/Primordial rolls
+- In-game leaderboards and the temporary leaderboard bows
+- Not included: the old quivr.net website leaderboards and PvP matchmaking
+
+## Hosting on a Linux server (Docker)
 
 ```sh
-git clone <this repo> quivr-server
-cd quivr-server
-
-# 1. Start the server (listens on 127.0.0.1:4040, restarts with Docker)
-docker compose up -d
-
-# 2. Point the game at it (finds the Steam install automatically)
-dotnet run --project patcher
+docker compose up -d        # listens on 127.0.0.1:4040
 ```
 
-Then start QuiVr. The "Server Offline" message should be gone, and items/fragments stay after a restart.
+Edit `docker-compose.yml` to `"4040:4040"` to accept other players, who then choose option 2 with your address. Data lives in the `quivr-data` volume. Without Docker: `./QuiVrRevival serve --host 0.0.0.0` (the Linux release binary).
 
-The patcher keeps the original files as `*.orig` next to them. To undo:
+### Server settings
 
-```sh
-dotnet run --project patcher -- --restore
-```
+The data folder contains:
 
-Steam's *Verify integrity of game files* also restores the original files (then just run the patcher again).
+| File | |
+|---|---|
+| `quivr.db` | all player data (single file; back it up while the server is stopped) |
+| `game-config.json` | values the game reads: `ServerMessage` (shown in the lobby if longer than 5 characters), `RespawnTime`, `InvincibleTime`, `DiffMult`, … Edited live. |
+| `items.json` | optional: put a modified copy of [`items.json`](src/QuiVrRevival/Resources/items.json) here to change the loot table |
+| `server.log` | log; set `QUIVR_TRACE=1` to log every request |
 
-If the game is installed somewhere unusual, pass the folder: `dotnet run --project patcher -- "/path/to/QuiVr"`.
+`QuiVrRevival serve` options: `--port 4040`, `--host 127.0.0.1`, `--data DIR` (or `QUIVR_PORT`, `QUIVR_HOST`, `QUIVR_DATA`).
 
-## Hosting a server for other players
-
-1. Copy `.env.example` to `.env`, set `BIND_ADDRESS=0.0.0.0` and `PUBLIC_SERVER_URL` to the address players will use.
-2. `docker compose up -d`
-3. Players patch their game with your address:
-   ```sh
-   dotnet run --project patcher -- --url http://your-host:4040/parse/
-   ```
-
-The game talks plain HTTP and sends the Steam ID as both username and password (that is how the original game was built), so treat accounts on a public server as low-security. Putting the server behind an HTTPS reverse proxy and patching with an `https://` URL works too.
+**Security note for public servers:** the game logs in with your SteamID as both username *and* password (that is how it was built), and SteamIDs are public. On a shared server, someone determined could log in as another player. The server only lets each account change its own data and scores, but it cannot tell who is really behind an account. Private servers are unaffected.
 
 ## How it works
 
-The game uses the Parse SDK. Its connection settings are compiled into `Assembly-CSharp-firstpass.dll` (`ParseInitBehavior`: app ID `QuiVr`, server `http://34.198.149.161:4040/parse/`), and a second "is the server online" check reads the address from a scene asset. The patcher (`patcher/`, using Mono.Cecil) replaces that URL literal and the online-check address; nothing else in the game is changed.
+The game uses the 2016 Parse SDK. QuiVr Revival is a single self-contained .NET 8 program that contains both
 
-The server (`server/`) is Parse Server with:
+- **a server** implementing the part of the Parse REST API the game uses (login, user objects, config, the four cloud functions `AddItem`, `ReplaceItemV3`, `GetItemV2` and `FixInventories`, and the `Items`, `VersionInfo`, `ArcadeUser`, `PlayerMovement` and leaderboard classes) on Kestrel, with storage in an embedded LiteDB file, and
+- **an installer** that patches `Assembly-CSharp-firstpass.dll` (`ParseInitBehavior`, which hard-codes `http://34.198.149.161:4040/parse/`) and `Assembly-CSharp.dll` (the "server online" check) with Mono.Cecil. Both now call `QuiVrRevival.Hook.ServerUrl()` from a small .NET 3.5 DLL placed next to them. The hook reads `<game>/QuiVrRevival/config.ini` and, for local play, starts `QuiVrRevival.exe serve --parent-pid …` if nothing is listening yet. The server exits when the game does. Originals are kept as `*.orig`.
 
-| Piece | Purpose |
-|---|---|
-| `_User` fields | `Resource`, `Inventory`, `Outfit`, `PlayerTitles`, `Wings`, `EquippedCosmetics`, stats — written by the game directly |
-| `Items` class | loot table, read by the game; seeded from `server/data/items.json` |
-| `VersionInfo`, `ArcadeUser`, `PlayerMovement` classes | session counter, VR-arcade profiles, analytics counter — written by the game |
-| `FFKDiff`, `CanyonMPDiff`, `ArcheryRange01`, `OwlInvaders` | leaderboards; players can only write their own rows |
-| Config | `ServerMessage`, `BetaMessage`, `WeeklySeed`, `RespawnTime`, `InvincibleTime`, `DiffMult` |
-| `AddItem` | append item(s) to the inventory string |
-| `ReplaceItemV3` | reforge (replace) or disenchant (remove) an item |
-| `GetItemV2` | pick a random item of a rarity, preferring unowned items in the slot you have least of |
-| `FixInventories` | drop malformed / duplicate inventory entries |
+Workarounds for client bugs live in the server:
 
-Two client bugs are worked around on the server:
+- After a failed first login the game never reaches its sign-up code, so unknown players are signed up on login.
+- The account's `name` is read unchecked right after login, so new accounts get a placeholder.
+- The next-legendary counter `NxtLgdr` is created as an array but read as a number; it's stored as a number.
 
-- After a failed first login the game never reaches its sign-up code, so the server creates the account (username = password = Steam ID, as the game expects) when an unknown player logs in.
-- The game creates the `NxtLgdr` (next-legendary counter) field as an array but reads it as a number, which would break item rewards from the second run on. A `beforeSave` hook stores it as a number.
+Why not the Steam Workshop? QuiVr's Workshop support is only an uploader for 3D models that the developer reviewed by hand; the game never loads Workshop content, so a Workshop item can't change anything.
 
-### Where the item data comes from
+### Item data
 
-- `server/data/items.json` is the drop table `Assets/Resources/ItemDropData.asset` from the developer's public [QuiVr-PSVR source](https://github.com/KeithKirby/QuiVr-PSVR), plus *Tenser's Ocular Jacket*, which is defined in the Steam build's `resources.assets` but was added after that table.
-- *Battle Shell* appears on an armory rack in the Steam build, but its effect is not recorded anywhere, so it is not in the loot table.
-- Bows were never random drops; they are achievement / leaderboard / Early Access rewards granted by the client.
+`items.json` is the drop table `Assets/Resources/ItemDropData.asset` from the developer's public [QuiVr-PSVR source](https://github.com/KeithKirby/QuiVr-PSVR), plus *Tenser's Ocular Jacket*, which is defined in the Steam build but newer than that table. *Battle Shell* appears on an armory rack in the Steam build but its effect isn't recorded anywhere, so it isn't in the pool. Bows were never random drops; achievements and leaderboards grant them in the client.
 
-## Operating
+## Building
+
+Needs the .NET 8 SDK.
 
 ```sh
-docker compose logs -f server     # server log
-docker compose down               # stop (data is kept in the mongo-data volume)
-docker compose down -v            # stop and delete all player data
+./build.sh 1.0.0                         # release zips in dist/
+dotnet run --project src/QuiVrRevival     # interactive menu
+tests/smoke.sh http://127.0.0.1:4040/parse   # replays the game's requests against a running server (needs curl, jq)
 ```
 
-Change a config value (e.g. show a message to players; it must be longer than 5 characters):
+Releases are built by GitHub Actions when a `v*` tag is pushed (`.github/workflows/release.yml`), which also publishes the Docker image to `ghcr.io`.
 
-```sh
-docker compose exec -T mongo mongosh quivr --quiet \
-  --eval 'db.getCollection("_GlobalConfig").updateOne({_id:1},{$set:{"params.ServerMessage":"Welcome back, archers!"}})'
-```
+Moving from the earlier Parse Server + MongoDB version: export the classes with `mongosh` as EJSON (`{"_User":[…],"FFKDiff":[…],…}`) and run `QuiVrRevival import-parse export.json --data DIR`.
 
 ## License
 
