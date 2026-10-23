@@ -79,6 +79,8 @@ async function run() {
   // Both are created and updated directly by the game client.
   await ensureClass('VersionInfo', { Version: 'String', Sessions: 'Number', TimePlayed: 'Number' }, PUBLIC_WRITE);
   await ensureClass('ArcadeUser', { Name: 'String', Pin: 'String' }, PUBLIC_WRITE);
+  // Analytics counters (SingleUseAnalytics); the game only fetches and increments existing rows.
+  await ensureClass('PlayerMovement', {}, PUBLIC_WRITE);
   await seedItems();
   await seedConfig();
   console.log(`seed: done (${items.length} items in catalog)`);

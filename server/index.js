@@ -1,3 +1,4 @@
+/* global Parse */
 const crypto = require('crypto');
 const path = require('path');
 const express = require('express');
@@ -38,11 +39,33 @@ async function main() {
   await server.start();
 
   const app = express();
+  app.get(`${MOUNT}/login`, autoSignUp);
   app.use(MOUNT, server.app);
   app.get('/health', (req, res) => res.json({ status: 'ok' }));
   app.listen(PORT, () => console.log(`QuiVr server listening on :${PORT}${MOUNT}`));
 
   await seed.run();
+}
+
+// The game logs in with its platform user ID as both username and password and is
+// supposed to sign up when that fails, but that fallback never runs in the shipped
+// client. So create the account here before the login request reaches Parse.
+async function autoSignUp(req, res, next) {
+  const { username, password } = req.query;
+  try {
+    if (typeof username === 'string' && username === password && /^[\w.-]{5,64}$/.test(username)) {
+      const existing = await new Parse.Query(Parse.User).equalTo('username', username).first({ useMasterKey: true });
+      if (!existing) {
+        const user = new Parse.User();
+        user.set({ username, password, TimePlayed: 10 });
+        await user.save(null, { useMasterKey: true });
+        console.log(`auto sign-up: ${username}`);
+      }
+    }
+  } catch (err) {
+    console.error(`auto sign-up failed for ${username}: ${err.message}`);
+  }
+  next();
 }
 
 main().catch(err => {
