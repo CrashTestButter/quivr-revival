@@ -1,0 +1,4 @@
+.env
+node_modules/
+patcher/bin/
+patcher/obj/

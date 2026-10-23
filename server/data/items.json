@@ -1,0 +1,330 @@
+[
+  {
+    "Name": "Diamond Studded Jerkin",
+    "ItemType": 1,
+    "Rarity": 1,
+    "Meshes": 0,
+    "EffectID": 10,
+    "Colors": "1,1,1,1"
+  },
+  {
+    "Name": "Emerald Studded Jerkin",
+    "ItemType": 1,
+    "Rarity": 1,
+    "Meshes": 0,
+    "EffectID": 10,
+    "Colors": "0.2,1,0.2,1"
+  },
+  {
+    "Name": "Ruby Studded Jerkin",
+    "ItemType": 1,
+    "Rarity": 1,
+    "Meshes": 0,
+    "EffectID": 10,
+    "Colors": "1,0.2,0.2,1"
+  },
+  {
+    "Name": "Diamond Studded Mask",
+    "ItemType": 2,
+    "Rarity": 1,
+    "Meshes": 0,
+    "EffectID": 11,
+    "Colors": "1,1,1,1"
+  },
+  {
+    "Name": "Emerald Studded Mask",
+    "ItemType": 2,
+    "Rarity": 1,
+    "Meshes": 0,
+    "EffectID": 11,
+    "Colors": "0.2,1,0.2,1"
+  },
+  {
+    "Name": "Ruby Studded Mask",
+    "ItemType": 2,
+    "Rarity": 1,
+    "Meshes": 0,
+    "EffectID": 11,
+    "Colors": "1,0.2,0.2,1"
+  },
+  {
+    "Name": "Blue Leather Gloves",
+    "ItemType": 3,
+    "Rarity": 1,
+    "Meshes": 4,
+    "EffectID": 2,
+    "Colors": ""
+  },
+  {
+    "Name": "Green Leather Gloves",
+    "ItemType": 3,
+    "Rarity": 1,
+    "Meshes": 3,
+    "EffectID": 2,
+    "Colors": ""
+  },
+  {
+    "Name": "Red Leather Gloves",
+    "ItemType": 3,
+    "Rarity": 1,
+    "Meshes": 2,
+    "EffectID": 2,
+    "Colors": ""
+  },
+  {
+    "Name": "Charged Bolt",
+    "ItemType": 0,
+    "Rarity": 2,
+    "Meshes": 2,
+    "EffectID": 9,
+    "Colors": "0.5,0.5,1,1"
+  },
+  {
+    "Name": "Shard of Ra'Keth",
+    "ItemType": 0,
+    "Rarity": 2,
+    "Meshes": 4,
+    "EffectID": 15,
+    "Colors": ""
+  },
+  {
+    "Name": "Breastplate of Tendrils",
+    "ItemType": 1,
+    "Rarity": 2,
+    "Meshes": 1,
+    "EffectID": 4,
+    "Colors": "0,0.5,1,1"
+  },
+  {
+    "Name": "Scavengers Mask",
+    "ItemType": 2,
+    "Rarity": 2,
+    "Meshes": 1,
+    "EffectID": 6,
+    "Colors": ""
+  },
+  {
+    "Name": "Frigid Mitts",
+    "ItemType": 3,
+    "Rarity": 2,
+    "Meshes": 12,
+    "EffectID": 32,
+    "Colors": ""
+  },
+  {
+    "Name": "Conductive Quiver",
+    "ItemType": 6,
+    "Rarity": 2,
+    "Meshes": 1,
+    "EffectID": 36,
+    "Colors": "0.2,1,0.2,1"
+  },
+  {
+    "Name": "Lightning Quiver",
+    "ItemType": 6,
+    "Rarity": 2,
+    "Meshes": 5,
+    "EffectID": 1,
+    "Colors": ""
+  },
+  {
+    "Name": "Quiver of Wealth",
+    "ItemType": 6,
+    "Rarity": 2,
+    "Meshes": 2,
+    "EffectID": 8,
+    "Colors": "1,0.5,0.2,1"
+  },
+  {
+    "Name": "Divine Barb",
+    "ItemType": 0,
+    "Rarity": 3,
+    "Meshes": 6,
+    "EffectID": 39,
+    "Colors": ""
+  },
+  {
+    "Name": "Mischief's Dart",
+    "ItemType": 0,
+    "Rarity": 3,
+    "Meshes": 3,
+    "EffectID": 14,
+    "Colors": "1,0.4,0.4,1"
+  },
+  {
+    "Name": "Corrosive Jerkin",
+    "ItemType": 1,
+    "Rarity": 3,
+    "Meshes": 1,
+    "EffectID": 3,
+    "Colors": "0,1,0,1"
+  },
+  {
+    "Name": "Prophetic Furs",
+    "ItemType": 1,
+    "Rarity": 3,
+    "Meshes": 10,
+    "EffectID": 40,
+    "Colors": ""
+  },
+  {
+    "Name": "Ricochet Armor",
+    "ItemType": 1,
+    "Rarity": 3,
+    "Meshes": 2,
+    "EffectID": 5,
+    "Colors": ""
+  },
+  {
+    "Name": "Seeker's Battleplate",
+    "ItemType": 1,
+    "Rarity": 3,
+    "Meshes": 8,
+    "EffectID": 27,
+    "Colors": ""
+  },
+  {
+    "Name": "Tenser's Ocular Jacket",
+    "ItemType": 1,
+    "Rarity": 3,
+    "Meshes": 12,
+    "EffectID": 44,
+    "Colors": ""
+  },
+  {
+    "Name": "Tripwire Tunic",
+    "ItemType": 1,
+    "Rarity": 3,
+    "Meshes": 3,
+    "EffectID": 20,
+    "Colors": ""
+  },
+  {
+    "Name": "Vest of Displacement",
+    "ItemType": 1,
+    "Rarity": 3,
+    "Meshes": 4,
+    "EffectID": 17,
+    "Colors": ""
+  },
+  {
+    "Name": "Focused Visage",
+    "ItemType": 2,
+    "Rarity": 3,
+    "Meshes": 3,
+    "EffectID": 31,
+    "Colors": ""
+  },
+  {
+    "Name": "Patient Veil",
+    "ItemType": 2,
+    "Rarity": 3,
+    "Meshes": 5,
+    "EffectID": 37,
+    "Colors": ""
+  },
+  {
+    "Name": "Aldur Wards",
+    "ItemType": 3,
+    "Rarity": 3,
+    "Meshes": 11,
+    "EffectID": 26,
+    "Colors": ""
+  },
+  {
+    "Name": "Divine Wraps",
+    "ItemType": 3,
+    "Rarity": 3,
+    "Meshes": 5,
+    "EffectID": 16,
+    "Colors": "0.65,0.57,1,1:0,1,0.3,1"
+  },
+  {
+    "Name": "Molten Gauntlets",
+    "ItemType": 3,
+    "Rarity": 3,
+    "Meshes": 10,
+    "EffectID": 23,
+    "Colors": ""
+  },
+  {
+    "Name": "Static Wraps",
+    "ItemType": 3,
+    "Rarity": 3,
+    "Meshes": 8,
+    "EffectID": 22,
+    "Colors": ""
+  },
+  {
+    "Name": "Conductive Sleeve",
+    "ItemType": 6,
+    "Rarity": 3,
+    "Meshes": 3,
+    "EffectID": 42,
+    "Colors": ""
+  },
+  {
+    "Name": "Permafrost Quiver",
+    "ItemType": 6,
+    "Rarity": 3,
+    "Meshes": 8,
+    "EffectID": 24,
+    "Colors": ""
+  },
+  {
+    "Name": "Quiver of Embers",
+    "ItemType": 6,
+    "Rarity": 3,
+    "Meshes": 9,
+    "EffectID": 12,
+    "Colors": ""
+  },
+  {
+    "Name": "Oiled Bolt",
+    "ItemType": 0,
+    "Rarity": 4,
+    "Meshes": 5,
+    "EffectID": 38,
+    "Colors": ""
+  },
+  {
+    "Name": "Canine Overcoat",
+    "ItemType": 1,
+    "Rarity": 4,
+    "Meshes": 7,
+    "EffectID": 25,
+    "Colors": ""
+  },
+  {
+    "Name": "Cloak of the Inferno",
+    "ItemType": 1,
+    "Rarity": 4,
+    "Meshes": 5,
+    "EffectID": 21,
+    "Colors": ""
+  },
+  {
+    "Name": "Necromantic Chestguard",
+    "ItemType": 1,
+    "Rarity": 4,
+    "Meshes": 9,
+    "EffectID": 41,
+    "Colors": ""
+  },
+  {
+    "Name": "Gloves of the Past",
+    "ItemType": 3,
+    "Rarity": 4,
+    "Meshes": 9,
+    "EffectID": 7,
+    "Colors": ""
+  },
+  {
+    "Name": "Voidwraps",
+    "ItemType": 3,
+    "Rarity": 4,
+    "Meshes": 13,
+    "EffectID": 43,
+    "Colors": ""
+  }
+]
