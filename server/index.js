@@ -39,7 +39,8 @@ async function main() {
   await server.start();
 
   const app = express();
-  app.get(`${MOUNT}/login`, autoSignUp);
+  // The game sends every request as POST with {"_method":"GET"}, login data in the query string.
+  app.all(`${MOUNT}/login`, autoSignUp);
   app.use(MOUNT, server.app);
   app.get('/health', (req, res) => res.json({ status: 'ok' }));
   app.listen(PORT, () => console.log(`QuiVr server listening on :${PORT}${MOUNT}`));
