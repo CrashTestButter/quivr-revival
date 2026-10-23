@@ -58,9 +58,13 @@ async function autoSignUp(req, res, next) {
       const existing = await new Parse.Query(Parse.User).equalTo('username', username).first({ useMasterKey: true });
       if (!existing) {
         const user = new Parse.User();
-        user.set({ username, password, TimePlayed: 10 });
+        // "name" is read unchecked right after login; the game then replaces it with the player's name.
+        user.set({ username, password, name: 'Archer', TimePlayed: 10 });
         await user.save(null, { useMasterKey: true });
         console.log(`auto sign-up: ${username}`);
+      } else if (existing.get('name') === undefined) {
+        existing.set('name', 'Archer');
+        await existing.save(null, { useMasterKey: true });
       }
     }
   } catch (err) {
