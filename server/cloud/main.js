@@ -6,8 +6,12 @@
 // where each item is ArmorOption.ToString():
 //   Name%ItemType%ObjectID%r,g,b,a:r,g,b,a%Rarity%Ancient|EffectID^Value
 
+const scores = require('./scores');
+
 const MASTER = { useMasterKey: true };
 const SEP = '$';
+
+scores.register();
 
 function splitInventory(s) {
   return typeof s === 'string' && s.length > 1 ? s.split(SEP).filter(i => i.length > 5) : [];

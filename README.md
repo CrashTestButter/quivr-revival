@@ -17,10 +17,11 @@ This project brings that server back: a [Parse Server](https://parseplatform.org
 - Login (automatic, via your Steam ID), saving relic fragments, items, outfit, titles, stats
 - Random item rewards after a run, with the original 41-item loot table
 - Reforging / disenchanting, Hallowed and Primordial rolls
-- Achievement and leaderboard bows (handled by the game itself)
+- In-game leaderboards (singleplayer, multiplayer, archery range, owl minigame) and the temporary leaderboard bows
+- Achievement bows (handled by the game itself)
 - Multiplayer (runs on Photon, which was never down)
 
-Not included: the website leaderboards (quivr.net) and the PvP matchmaking queue.
+Not included: the quivr.net website leaderboards and the PvP matchmaking queue.
 
 ## Quick start (play on your own PC)
 
@@ -70,14 +71,18 @@ The server (`server/`) is Parse Server with:
 |---|---|
 | `_User` fields | `Resource`, `Inventory`, `Outfit`, `PlayerTitles`, `Wings`, `EquippedCosmetics`, stats — written by the game directly |
 | `Items` class | loot table, read by the game; seeded from `server/data/items.json` |
-| `VersionInfo`, `ArcadeUser` classes | session counter and VR-arcade profiles, written by the game |
+| `VersionInfo`, `ArcadeUser`, `PlayerMovement` classes | session counter, VR-arcade profiles, analytics counter — written by the game |
+| `FFKDiff`, `CanyonMPDiff`, `ArcheryRange01`, `OwlInvaders` | leaderboards; players can only write their own rows |
 | Config | `ServerMessage`, `BetaMessage`, `WeeklySeed`, `RespawnTime`, `InvincibleTime`, `DiffMult` |
 | `AddItem` | append item(s) to the inventory string |
 | `ReplaceItemV3` | reforge (replace) or disenchant (remove) an item |
 | `GetItemV2` | pick a random item of a rarity, preferring unowned items in the slot you have least of |
 | `FixInventories` | drop malformed / duplicate inventory entries |
 
-A `beforeSave` hook also works around a client bug: the game creates the `NxtLgdr` (next-legendary counter) field as an array but reads it as a number, which would break item rewards from the second run on.
+Two client bugs are worked around on the server:
+
+- After a failed first login the game never reaches its sign-up code, so the server creates the account (username = password = Steam ID, as the game expects) when an unknown player logs in.
+- The game creates the `NxtLgdr` (next-legendary counter) field as an array but reads it as a number, which would break item rewards from the second run on. A `beforeSave` hook stores it as a number.
 
 ### Where the item data comes from
 

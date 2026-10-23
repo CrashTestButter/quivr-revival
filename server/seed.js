@@ -1,5 +1,6 @@
 /* global Parse */
 const items = require('./data/items.json');
+const { SCORE_CLASSES } = require('./cloud/scores');
 
 const MASTER = { useMasterKey: true };
 
@@ -81,6 +82,12 @@ async function run() {
   await ensureClass('ArcadeUser', { Name: 'String', Pin: 'String' }, PUBLIC_WRITE);
   // Analytics counters (SingleUseAnalytics); the game only fetches and increments existing rows.
   await ensureClass('PlayerMovement', {}, PUBLIC_WRITE);
+  // Leaderboards (ScoreDatabase); ownership is enforced in cloud/main.js.
+  for (const board of SCORE_CLASSES) {
+    await ensureClass(board, {
+      Score: 'Number', UserID: 'String', Username: 'String', BoardID: 'String', VersionEarned: 'String',
+    }, PUBLIC_WRITE);
+  }
   await seedItems();
   await seedConfig();
   console.log(`seed: done (${items.length} items in catalog)`);
