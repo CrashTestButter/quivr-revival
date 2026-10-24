@@ -21,7 +21,7 @@ and nothing you earn is kept. QuiVr Revival is a small replacement server plus a
 
 That's all. The server starts and stops together with the game, and your progress is stored in `%APPDATA%\QuiVrRevival`.
 
-### Linux / Steam Deck (Proton)
+### Linux (Proton)
 
 1. Download `QuiVrRevival-…-linux.zip`, unzip, run `./QuiVrRevival` in a terminal and choose **1**.
    Keep `QuiVrRevival.exe` next to it — under Proton the game starts that one itself.
